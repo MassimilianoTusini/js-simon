@@ -19,9 +19,10 @@
 
 
 // Dichiarazione degli input
-const myForm = document.getElementById ("answer-form");
+const mioForm = document.getElementById ("answers-form");
 const mioUl = document.getElementById ("numbers-list");
-const countDown = document.getElementById("countdown")
+const countDown = document.getElementById("countdown");
+const mioP = document.querySelector ("p")
 
 
 // Funzione per generare numeri casuali
@@ -55,3 +56,20 @@ numeriSchermo.forEach(numero=> {
     mioUl.appendChild(mioLi)
 })
 
+// Inizio le variabili per il conteggio del timer
+let count = 30;
+countDown.innerText = count;
+
+// Inizio countdown con setInterval 
+const timer = setInterval (() => {
+    count--;
+    countDown.textContent = count;
+    // Fermo il counter quando arriva a zero con clearInterval
+    if (count <= 0) {
+        clearInterval(timer);
+        mioUl.classList.add("d-none");
+        mioP.style.display = "none";
+        countDown.textContent = "Tempo Scaduto! Seleziona i numeri che ricordi!";
+        mioForm.classList.remove("d-none");
+    }
+}, 1000);
