@@ -1,28 +1,10 @@
-// Descrizione:
-// Visualizzare in pagina 5 numeri casuali. Da lì parte un timer di 30 secondi.
-// Dopo 30 secondi i numeri scompaiono e appaiono invece 5 input in cui l'utente deve inserire i numeri che ha visto precedentemente, nell'ordine che preferisce.
-
-// Dopo che sono stati inseriti i 5 numeri, il software dice quanti e quali dei numeri da indovinare sono stati individuati.
-
-// NOTA: non è importante l'ordine con cui l'utente inserisce i numeri, basta che ne indovini il più possibile.
-
-// BONUS:
-// Inseriamo la validazione: se l'utente mette due numeri uguali o inserisce cose diverse da numeri lo blocchiamo in qualche modo.,
-// Se l’utente ha inserito qualcosa di non valido, segnaliamolo visivamente nel form.,
-
-// Consigli del giorno:
-
-// Pensate prima in italiano.,
-// Dividete in piccoli problemi la consegna.,
-// Individuate gli elementi di cui avete bisogno per realizzare il programma.,
-// Immaginate la logica come fosse uno snack: "Dati 2 array di numeri, indica quali e quanti numeri ci sono in comune tra i due array",
-
-
 // Dichiarazione degli input
 const mioForm = document.getElementById ("answers-form");
 const mioUl = document.getElementById ("numbers-list");
 const countDown = document.getElementById("countdown");
-const mioP = document.querySelector ("p")
+const mioP = document.querySelector ("p");
+const mioInput = document.querySelectorAll(".form-control")
+const messaggio = document.getElementById ("message")
 
 
 // Funzione per generare numeri casuali
@@ -53,8 +35,8 @@ const numeriSchermo = arrayNum(1, 50, 5)
 numeriSchermo.forEach(numero=> {
     const mioLi = document.createElement("li");
     mioLi.textContent = numero;
-    mioUl.appendChild(mioLi)
-})
+    mioUl.appendChild(mioLi);
+});
 
 // Inizio le variabili per il conteggio del timer
 let count = 30;
@@ -73,3 +55,24 @@ const timer = setInterval (() => {
         mioForm.classList.remove("d-none");
     }
 }, 1000);
+
+// Raccolgo i dati dell'utente tramite un addEventListener
+mioForm.addEventListener ("submit", (event) =>{
+    event.preventDefault();
+    // Array che raccoglie i valori tramite un ciclo for
+    let output = [];
+    for (let i = 0; i < mioInput.length; i++){
+        output.push(Number(mioInput[i].value));
+    }
+    console.log("Numeri inseriti",output);
+    let indovinati = [];
+    // Confronto i numeri messi dall'utente con quelli generati dal pc 
+    output.forEach(num =>{
+    if (numeriSchermo.includes(num)){
+        indovinati.push(num)
+        }
+    })
+    console.log("Numeri indovinati", indovinati);
+
+    messaggio.textContent = `Hai indovinato ${indovinati.length} numeri: ${indovinati.join(", ")}`;
+});
